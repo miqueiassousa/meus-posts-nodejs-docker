@@ -1,8 +1,11 @@
+// Carregar as variáveis de ambiente do arquivo .env
+require('dotenv').config();
+
 const Sequelize = require('sequelize');
 
-// Conexão com o banco de dados MySQL no Docker
-const sequelize = new Sequelize('posts', 'root', 'root', { // Coloca posts root root pra docker
-    host: 'db', // "db" é o nome do serviço do MySQL no Docker Compose
+// Conexão com o banco de dados MySQL no Docker usando variáveis de ambiente
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST, // Usar o host configurado na variável de ambiente
     dialect: 'mysql',
     logging: false, // Desativa o log do SQL no console (opcional)
     dialectOptions: {

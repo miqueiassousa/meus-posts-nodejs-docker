@@ -3,6 +3,7 @@
     "body-parser": "^1.20.2",
     "bootstrap": "^5.3.3",
     "dockerize": "^0.1.0",
+    "dotenv": "^16.4.7",
     "express": "^4.19.2",
     "express-handlebars": "^7.1.2",
     "mysql2": "^3.9.7",
