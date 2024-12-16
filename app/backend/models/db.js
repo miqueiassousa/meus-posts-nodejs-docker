@@ -1,31 +1,36 @@
-// Carregar as variáveis de ambiente do arquivo .env
-require('dotenv').config();
+const dotenv = require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
+const Sequelize = require('sequelize'); // Importa o Sequelize
+const env = process.env.NODE_ENV || 'development'; // Define o ambiente (produção ou desenvolvimento)
+const config = require('../config/config.js')[env]; // require('../config/config.js') -> Arquivo [env] -> posição no array do objeto = Ex: config.production.database
 
-const Sequelize = require('sequelize');
+// Verifica se a configuração foi carregada corretamente
 
-// Conexão com o banco de dados MySQL no Docker usando variáveis de ambiente
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST, // Usar o host configurado na variável de ambiente
-    dialect: 'mysql',
-    logging: false, // Desativa o log do SQL no console (opcional)
-    dialectOptions: {
-        // Algumas opções de dialeto específicas do MySQL, por exemplo, para codificação de caracteres
-        charset: 'utf8mb4', // Suporta emojis e caracteres especiais
+
+// Cria a instância do Sequelize com as configurações apropriadas
+const sequelize = new Sequelize(
+  'posts',      // Configuração do banco de dados
+  'app_user',      // Nome de usuário
+  'app_password',      // Senha do banco de dados
+  {
+    host: 'db',            // Endereço do host
+    dialect: 'mysql',      // Tipo de banco (MySQL)
+    logging: false,      // Desabilitar logging
+    dialectOptions: { charset: 'utf8mb4_unicode_ci' },  // Configuração de charset
+    pool: {                        // Pool de conexões
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
     },
-    pool: {
-        max: 5,        // Número máximo de conexões no pool
-        min: 0,        // Número mínimo de conexões no pool
-        acquire: 30000, // Tempo máximo (ms) para tentar uma conexão antes de falhar
-        idle: 10000,   // Tempo máximo (ms) que uma conexão pode ficar ociosa antes de ser liberada
-    },
-    retry: {
-        max: 3, // Número máximo de tentativas de reconexão em caso de erro
-    },
-});
+    retry: { max: 3 },            // Configuração de retry
+  }
+);
 
-var db = {};
+// Exporta a instância do Sequelize
+const db = {
+  sequelize,
+  Sequelize,
+};
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
+// Exporte o db para uso em outros módulos
 module.exports = db;

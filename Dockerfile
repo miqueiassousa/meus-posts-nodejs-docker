@@ -24,6 +24,12 @@ COPY ./app/frontend/public ./frontend/public
 # Copiar o script wait-for-it.sh para o diretório do container
 COPY ./wait-for-it.sh /usr/src/app/wait-for-it.sh
 
+# Copiar o arquivo .env da pasta backend para o diretório correto dentro do container
+COPY ./app/backend/.env ./backend/.env
+
+# Garantir permissões de execução para o arquivo server.js
+RUN chmod +x /usr/src/app/backend/server.js
+
 # Garantir que o script wait-for-it.sh tenha permissão de execução
 RUN chmod +x /usr/src/app/wait-for-it.sh
 
@@ -34,4 +40,4 @@ COPY ./app/backend/views /usr/src/app/backend/views
 EXPOSE 8080
 
 # Comando para iniciar o servidor com o dockerize (aguardar o MySQL ficar disponível)
-CMD ["dockerize", "-wait", "tcp://db:3306", "-timeout", "60s", "node", "backend/server.js"]
+CMD ["dockerize", "-wait", "tcp://db:3306", "-timeout", "60s", "npm", "run", "dev"]

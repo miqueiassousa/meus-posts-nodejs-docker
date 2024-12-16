@@ -1,3 +1,12 @@
+// // Define o ambiente (produção ou desenvolvimento)
+// const env = process.env.NODE_ENV || 'production';
+
+// // require('../config/config.js') -> Arquivo [env] -> posição no array do objeto = Ex: config.production.database
+// const config = require('../config/config.js')[env];
+
+// // Carrega as variáveis de ambiente do arquivo .env
+// const dotenv = require('dotenv').config();
+
 // models/Post.js
 const db = require('./db');
 
