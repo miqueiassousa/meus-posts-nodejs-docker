@@ -9,7 +9,7 @@ COPY ./app /usr/src/app
 # Instalar dependências no diretório de trabalho
 RUN npm install
 
-# Instalar o dockerize globalmente
+# Dockerize -> Automatizar a inicialização de containers Docker, garantindo que dependências externas (como banco de dados ou outros serviços) estejam prontas antes de iniciar o aplicativo principal.
 RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz \
     && tar -xzvf dockerize-linux-amd64-v0.6.1.tar.gz \
     && mv dockerize /usr/local/bin/
